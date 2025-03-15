@@ -89,4 +89,36 @@ env:
     default: "10485760"
   - name: ALLOWED_DOMAINS
     description: Comma-separated list of allowed domains for URL extraction
-    default: "" 
+    default: ""
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      port:
+        type: number
+        description: The port number for the server
+        default: 8000
+      maxImageSize:
+        type: number
+        description: Maximum image size in bytes
+        default: 10485760
+      allowedDomains:
+        type: string
+        description: Comma-separated list of allowed domains for URL extraction
+        default: ""
+  commandFunction: |
+    function getCommand(config) {
+      const env = {
+        PORT: config.port.toString(),
+        MAX_IMAGE_SIZE: config.maxImageSize.toString(),
+        ALLOWED_DOMAINS: config.allowedDomains
+      };
+      
+      return {
+        command: "node",
+        args: ["dist/index.js"],
+        env: env
+      };
+    } 
