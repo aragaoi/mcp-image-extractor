@@ -118,7 +118,6 @@ Parameters:
 
 ## Environment Variables
 
-Create a `.env` file with the following variables:
 - `PORT`: Server port (default: 8000)
 - `MAX_IMAGE_SIZE`: Maximum image size in bytes (default: 10MB)
 - `ALLOWED_DOMAINS`: Comma-separated list of allowed domains for URL extraction (optional)
