@@ -12,8 +12,5 @@ COPY . .
 # Build TypeScript
 RUN npm run build
 
-# Expose port
-EXPOSE 8000
-
-# Start the server
+# Start the server using stdio
 CMD ["node", "dist/index.js"] 

@@ -262,7 +262,6 @@ const server = createServer({
   },
 });
 
-server.listen(PORT, () => {
-  console.log(`MCP Image Extractor server running on port ${PORT}`);
-  console.log(`Server URL: http://localhost:${PORT}`);
-}); 
+// Use stdio transport instead of HTTP
+server.start();
+console.log('MCP Image Extractor server started in stdio mode'); 
