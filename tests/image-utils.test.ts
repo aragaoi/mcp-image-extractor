@@ -10,6 +10,15 @@ jest.mock('sharp');
 jest.mock('fs');
 jest.mock('path');
 
+// Define mock types
+type MockedSharp = {
+  metadata: jest.Mock;
+  resize: jest.Mock;
+  toBuffer: jest.Mock;
+  toFormat: jest.Mock;
+  toFile: jest.Mock;
+};
+
 // Import the functions to test
 import { 
   extractImageFromUrl, 
@@ -27,13 +36,19 @@ describe('Image Processing Functions', () => {
       throw new Error('Network error');
     });
     
-    (sharp as jest.Mock).mockImplementation(() => ({
+    // Create a mock sharp instance with properly typed methods
+    const mockSharpInstance: MockedSharp = {
+      // @ts-ignore - Ignore type error for mockResolvedValue
       metadata: jest.fn().mockResolvedValue({ width: 800, height: 600 }),
       resize: jest.fn().mockReturnThis(),
+      // @ts-ignore - Ignore type error for mockResolvedValue
       toBuffer: jest.fn().mockResolvedValue(Buffer.from('test')),
       toFormat: jest.fn().mockReturnThis(),
+      // @ts-ignore - Ignore type error for mockResolvedValue
       toFile: jest.fn().mockResolvedValue(undefined)
-    }));
+    };
+    
+    ((sharp as unknown) as jest.Mock).mockImplementation(() => mockSharpInstance);
     
     (fs.existsSync as jest.Mock).mockReturnValue(true);
     (fs.mkdirSync as jest.Mock).mockReturnValue(undefined);
