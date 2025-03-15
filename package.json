@@ -8,7 +8,8 @@
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
     "lint": "eslint . --ext .ts",
-    "test": "jest",
+    "test": "jest --no-cache --passWithNoTests",
+    "test:ci": "jest --ci",
     "smithery:deploy": "smithery deploy"
   },
   "keywords": [
@@ -31,11 +32,14 @@
   "devDependencies": {
     "@types/axios": "^0.14.4",
     "@types/dotenv": "^8.2.3",
-    "@types/node": "^20.17.24",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.10.0",
     "@types/sharp": "^0.32.0",
     "@typescript-eslint/eslint-plugin": "^6.12.0",
     "@typescript-eslint/parser": "^6.12.0",
     "eslint": "^8.54.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2"
   },

@@ -1,8 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import axios from 'axios';
 import * as dotenv from 'dotenv';
+import axios from 'axios';
 import sharp from 'sharp';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -20,28 +20,6 @@ const server = new McpServer({
   version: "1.0.0"
 });
 
-// Define parameter types
-type ExtractImageFromUrlParams = {
-  url: string;
-  resize: boolean;
-  max_width: number;
-  max_height: number;
-};
-
-type ExtractImageFromBase64Params = {
-  base64: string;
-  mime_type: string;
-  resize: boolean;
-  max_width: number;
-  max_height: number;
-};
-
-type SaveScreenshotParams = {
-  base64: string;
-  filename: string;
-  format: "png" | "jpg" | "jpeg" | "webp";
-};
-
 // Add extract_image_from_url tool
 server.tool(
   "extract_image_from_url",
@@ -51,12 +29,15 @@ server.tool(
     max_width: z.number().default(800).describe("Maximum width of the resized image (if resize is true)"),
     max_height: z.number().default(800).describe("Maximum height of the resized image (if resize is true)")
   },
-  async ({ url, resize, max_width, max_height }: ExtractImageFromUrlParams) => {
+  async (args) => {
     try {
+      const { url, resize, max_width, max_height } = args;
+      
       // Validate URL
       if (!url.startsWith('http://') && !url.startsWith('https://')) {
         return {
-          content: [{ type: "text", text: "Error: URL must start with http:// or https://" }]
+          content: [{ type: "text", text: "Error: URL must start with http:// or https://" }],
+          isError: true
         };
       }
 
@@ -70,7 +51,8 @@ server.tool(
 
         if (!isAllowed) {
           return {
-            content: [{ type: "text", text: `Error: Domain ${domain} is not in the allowed domains list` }]
+            content: [{ type: "text", text: `Error: Domain ${domain} is not in the allowed domains list` }],
+            isError: true
           };
         }
       }
@@ -106,25 +88,30 @@ server.tool(
       const base64 = imageBuffer.toString('base64');
       const mimeType = response.headers['content-type'] || 'image/jpeg';
 
+      // Return both text and image content
       return {
         content: [
           { 
             type: "text", 
             text: JSON.stringify({
-              base64,
-              mime_type: mimeType,
               width: metadata.width,
               height: metadata.height,
               format: metadata.format,
               size: imageBuffer.length
             })
+          },
+          {
+            type: "image",
+            data: base64,
+            mimeType: mimeType
           }
         ]
       };
     } catch (error: unknown) {
       console.error('Error processing image from URL:', error);
       return {
-        content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }]
+        content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }],
+        isError: true
       };
     }
   }
@@ -140,15 +127,18 @@ server.tool(
     max_width: z.number().default(800).describe("Maximum width of the resized image (if resize is true)"),
     max_height: z.number().default(800).describe("Maximum height of the resized image (if resize is true)")
   },
-  async ({ base64, mime_type, resize, max_width, max_height }: ExtractImageFromBase64Params) => {
+  async (args) => {
     try {
+      const { base64, mime_type, resize, max_width, max_height } = args;
+      
       // Decode base64
       let imageBuffer = Buffer.from(base64, 'base64');
       
       // Check size
       if (imageBuffer.length > MAX_IMAGE_SIZE) {
         return {
-          content: [{ type: "text", text: `Error: Image size exceeds maximum allowed size of ${MAX_IMAGE_SIZE} bytes` }]
+          content: [{ type: "text", text: `Error: Image size exceeds maximum allowed size of ${MAX_IMAGE_SIZE} bytes` }],
+          isError: true
         };
       }
       
@@ -175,25 +165,30 @@ server.tool(
       // Convert back to base64
       const processedBase64 = imageBuffer.toString('base64');
 
+      // Return both text and image content
       return {
         content: [
           { 
             type: "text", 
             text: JSON.stringify({
-              base64: processedBase64,
-              mime_type,
               width: metadata.width,
               height: metadata.height,
               format: metadata.format,
               size: imageBuffer.length
             })
+          },
+          {
+            type: "image",
+            data: processedBase64,
+            mimeType: mime_type
           }
         ]
       };
     } catch (error: unknown) {
       console.error('Error processing base64 image:', error);
       return {
-        content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }]
+        content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }],
+        isError: true
       };
     }
   }
@@ -207,8 +202,10 @@ server.tool(
     filename: z.string().default("").describe("Name to save the file as (without extension)"),
     format: z.enum(["png", "jpg", "jpeg", "webp"]).default("png").describe("Image format to save as")
   },
-  async ({ base64, filename, format }: SaveScreenshotParams) => {
+  async (args) => {
     try {
+      const { base64, filename, format } = args;
+      
       // Create screenshots directory if it doesn't exist
       const screenshotsDir = path.join(process.cwd(), 'screenshots');
       if (!fs.existsSync(screenshotsDir)) {
@@ -230,7 +227,8 @@ server.tool(
     } catch (error: unknown) {
       console.error('Error saving screenshot:', error);
       return {
-        content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }]
+        content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }],
+        isError: true
       };
     }
   }
