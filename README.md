@@ -41,7 +41,7 @@ A Model Context Protocol (MCP) server that extracts images from content and retu
 
 2. The server will be available at `http://localhost:8000`
 
-### Using with Claude Desktop
+### Using with  Cursor IDE
 
 Add the server to your Claude Desktop configuration:
 
@@ -57,26 +57,6 @@ Add the server to your Claude Desktop configuration:
       }
     }
   }
-}
-```
-
-### Using with Cursor IDE
-
-
-```json
-{
-  "servers": [
-    {
-      "name": "Image Extractor",
-      "command": "npx",
-      "args": ["-y", "mcp-image-extractor"],
-      "enabled": true,
-      "env": {
-        "PORT": "8000",
-        "MAX_IMAGE_SIZE": "10485760"
-      }
-    }
-  ]
 }
 ```
 
