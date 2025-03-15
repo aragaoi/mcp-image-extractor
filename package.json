@@ -1,0 +1,45 @@
+{
+  "name": "mcp-image-extractor",
+  "version": "1.0.0",
+  "description": "MCP server for extracting and converting images to base64 for LLM analysis",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "lint": "eslint . --ext .ts",
+    "test": "jest",
+    "smithery:deploy": "smithery deploy"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "image",
+    "base64",
+    "llm",
+    "smithery"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/server": "^0.1.0",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "sharp": "^0.33.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2"
+  },
+  "smithery": {
+    "name": "mcp-image-extractor",
+    "description": "MCP server for extracting and converting images to base64 for LLM analysis",
+    "version": "1.0.0",
+    "author": "",
+    "license": "MIT"
+  }
+} 

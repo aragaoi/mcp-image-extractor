@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "image-extractor": {
+      "command": "npx",
+      "args": ["-y", "mcp-image-extractor"],
+      "env": {
+        "PORT": "8000",
+        "MAX_IMAGE_SIZE": "10485760"
+      }
+    }
+  }
+} 

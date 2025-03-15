@@ -1,0 +1,92 @@
+name: mcp-image-extractor
+description: [IN TEST]MCP server for extracting and converting images to base64 for LLM analysis
+version: 1.0.0
+author: 
+homepage: https://github.com/ifmelate/mcp-image-extractor
+license: MIT
+
+tools:
+  - name: extract_image_from_url
+    description: Extract an image from a URL and convert it to base64 for LLM analysis
+    parameters:
+      type: object
+      properties:
+        url:
+          type: string
+          description: URL of the image to extract
+        resize:
+          type: boolean
+          description: Whether to resize the image to optimize for LLM processing
+          default: true
+        max_width:
+          type: integer
+          description: Maximum width of the resized image (if resize is true)
+          default: 800
+        max_height:
+          type: integer
+          description: Maximum height of the resized image (if resize is true)
+          default: 800
+      required:
+        - url
+
+  - name: extract_image_from_base64
+    description: Process a base64-encoded image for LLM analysis
+    parameters:
+      type: object
+      properties:
+        base64:
+          type: string
+          description: Base64-encoded image data
+        mime_type:
+          type: string
+          description: MIME type of the image
+          default: image/png
+        resize:
+          type: boolean
+          description: Whether to resize the image to optimize for LLM processing
+          default: true
+        max_width:
+          type: integer
+          description: Maximum width of the resized image (if resize is true)
+          default: 800
+        max_height:
+          type: integer
+          description: Maximum height of the resized image (if resize is true)
+          default: 800
+      required:
+        - base64
+
+  - name: save_screenshot
+    description: Save a screenshot or image as a file and return its path
+    parameters:
+      type: object
+      properties:
+        base64:
+          type: string
+          description: Base64-encoded image data
+        filename:
+          type: string
+          description: Name to save the file as (without extension)
+          default: ""
+        format:
+          type: string
+          description: Image format to save as
+          enum:
+            - png
+            - jpg
+            - jpeg
+            - webp
+          default: png
+      required:
+        - base64
+
+env:
+  - name: PORT
+    description: The port number for the server
+    default: "8000"
+  - name: MAX_IMAGE_SIZE
+    description: Maximum image size in bytes
+    default: "10485760"
+  - name: ALLOWED_DOMAINS
+    description: Comma-separated list of allowed domains for URL extraction
+    default: "" 
