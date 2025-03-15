@@ -24,3 +24,4 @@ screenshots/
 *.swp
 *.swo
 .DS_Store 
+.cursor/mcp.json
