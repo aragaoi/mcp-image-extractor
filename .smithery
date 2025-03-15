@@ -1,0 +1,6 @@
+{
+	"model":"./model.xml",
+	"configs":"configurations",
+	"projectFiles":"features",
+	"buildFolder":"build"
+}
