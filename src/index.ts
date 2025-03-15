@@ -3,7 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import axios from 'axios';
 import * as dotenv from 'dotenv';
-import * as sharp from 'sharp';
+import sharp from 'sharp';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -20,6 +20,28 @@ const server = new McpServer({
   version: "1.0.0"
 });
 
+// Define parameter types
+type ExtractImageFromUrlParams = {
+  url: string;
+  resize: boolean;
+  max_width: number;
+  max_height: number;
+};
+
+type ExtractImageFromBase64Params = {
+  base64: string;
+  mime_type: string;
+  resize: boolean;
+  max_width: number;
+  max_height: number;
+};
+
+type SaveScreenshotParams = {
+  base64: string;
+  filename: string;
+  format: "png" | "jpg" | "jpeg" | "webp";
+};
+
 // Add extract_image_from_url tool
 server.tool(
   "extract_image_from_url",
@@ -29,7 +51,7 @@ server.tool(
     max_width: z.number().default(800).describe("Maximum width of the resized image (if resize is true)"),
     max_height: z.number().default(800).describe("Maximum height of the resized image (if resize is true)")
   },
-  async ({ url, resize, max_width, max_height }) => {
+  async ({ url, resize, max_width, max_height }: ExtractImageFromUrlParams) => {
     try {
       // Validate URL
       if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -42,7 +64,7 @@ server.tool(
       if (ALLOWED_DOMAINS.length > 0) {
         const urlObj = new URL(url);
         const domain = urlObj.hostname;
-        const isAllowed = ALLOWED_DOMAINS.some(allowedDomain => 
+        const isAllowed = ALLOWED_DOMAINS.some((allowedDomain: string) => 
           domain === allowedDomain || domain.endsWith(`.${allowedDomain}`)
         );
 
@@ -99,10 +121,10 @@ server.tool(
           }
         ]
       };
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error processing image from URL:', error);
       return {
-        content: [{ type: "text", text: `Error: ${error.message}` }]
+        content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }]
       };
     }
   }
@@ -118,7 +140,7 @@ server.tool(
     max_width: z.number().default(800).describe("Maximum width of the resized image (if resize is true)"),
     max_height: z.number().default(800).describe("Maximum height of the resized image (if resize is true)")
   },
-  async ({ base64, mime_type, resize, max_width, max_height }) => {
+  async ({ base64, mime_type, resize, max_width, max_height }: ExtractImageFromBase64Params) => {
     try {
       // Decode base64
       let imageBuffer = Buffer.from(base64, 'base64');
@@ -168,10 +190,10 @@ server.tool(
           }
         ]
       };
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error processing base64 image:', error);
       return {
-        content: [{ type: "text", text: `Error: ${error.message}` }]
+        content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }]
       };
     }
   }
@@ -185,7 +207,7 @@ server.tool(
     filename: z.string().default("").describe("Name to save the file as (without extension)"),
     format: z.enum(["png", "jpg", "jpeg", "webp"]).default("png").describe("Image format to save as")
   },
-  async ({ base64, filename, format }) => {
+  async ({ base64, filename, format }: SaveScreenshotParams) => {
     try {
       // Create screenshots directory if it doesn't exist
       const screenshotsDir = path.join(process.cwd(), 'screenshots');
@@ -205,10 +227,10 @@ server.tool(
       return {
         content: [{ type: "text", text: `Screenshot saved to ${filePath}` }]
       };
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error saving screenshot:', error);
       return {
-        content: [{ type: "text", text: `Error: ${error.message}` }]
+        content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }]
       };
     }
   }
@@ -216,7 +238,7 @@ server.tool(
 
 // Start the server using stdio transport
 const transport = new StdioServerTransport();
-server.connect(transport).catch(error => {
+server.connect(transport).catch((error: unknown) => {
   console.error('Error starting MCP server:', error);
   process.exit(1);
 });
