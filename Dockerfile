@@ -1,15 +1,16 @@
 FROM node:18-alpine
 
+# Install dependencies for sharp image processing
+RUN apk add --no-cache python3 make g++ vips-dev
+
 WORKDIR /app
 
 # Copy package files and install dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm ci --only=production
 
-# Copy source code
+# Copy source code and build
 COPY . .
-
-# Build TypeScript
 RUN npm run build
 
 ENV PORT=8000
