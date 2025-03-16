@@ -1,0 +1,45 @@
+# Source files
+src/
+tsconfig.json
+
+# Development files
+.git
+.github
+.gitignore
+.npmignore
+.eslintrc
+.eslintignore
+.env*
+.DS_Store
+.vscode/
+.idea/
+
+# Tests
+__tests__/
+test/
+tests/
+*.test.ts
+*.spec.ts
+coverage/
+jest.config.js
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Smithery
+.smithery
+.smitheryignore
+smithery.yaml
+
+# Documentation
+docs/
+*.md
+!README.md
+!LICENSE
+
+# Examples
+examples/
+
+# Scripts
+scripts/ 

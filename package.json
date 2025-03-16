@@ -16,8 +16,7 @@
     "lint": "eslint . --ext .ts",
     "test": "jest --no-cache --passWithNoTests",
     "test:ci": "jest --ci",
-    "smithery:deploy": "SMITHERY_API_KEY=$SMITHERY_API_KEY npx @smithery/cli install . --client claude",
-    "deploy": "node scripts/deploy.js"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "mcp",
@@ -58,5 +57,16 @@
     "version": "1.0.0",
     "author": "",
     "license": "MIT"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ifmelate/mcp-image-extractor"
+  },
+  "homepage": "https://github.com/ifmelate/mcp-image-extractor#readme",
+  "bugs": {
+    "url": "https://github.com/ifmelate/mcp-image-extractor/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
