@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -11,6 +11,10 @@ COPY . .
 
 # Build TypeScript
 RUN npm run build
+
+ENV PORT=8000
+ENV MAX_IMAGE_SIZE=10485760
+ENV ALLOWED_DOMAINS=""
 
 # Start the server using stdio
 CMD ["node", "dist/index.js"] 

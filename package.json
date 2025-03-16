@@ -3,14 +3,21 @@
   "version": "1.0.0",
   "description": "MCP server for extracting and converting images to base64 for LLM analysis",
   "main": "dist/index.js",
+  "bin": {
+    "mcp-image-extractor": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node -e \"require('fs').chmodSync('dist/index.js', '755')\"",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
     "lint": "eslint . --ext .ts",
     "test": "jest --no-cache --passWithNoTests",
     "test:ci": "jest --ci",
-    "smithery:deploy": "smithery deploy"
+    "prepare": "npm run build",
+    "smithery:deploy": "npx @smithery/cli install . --client claude"
   },
   "keywords": [
     "mcp",
@@ -30,6 +37,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@deploya/smithery-cli": "^0.0.1",
+    "@smithery/cli": "^1.1.46",
     "@types/axios": "^0.14.4",
     "@types/dotenv": "^8.2.3",
     "@types/jest": "^29.5.12",

@@ -1,5 +1,5 @@
 name: mcp-image-extractor
-description: [IN TEST]MCP server for extracting and converting images to base64 for LLM analysis
+description: "MCP server for extracting and converting images to base64 for LLM analysis"
 version: 1.0.0
 author: 
 homepage: https://github.com/ifmelate/mcp-image-extractor
@@ -80,21 +80,11 @@ tools:
       required:
         - base64
 
-env:
-  - name: PORT
-    description: The port number for the server
-    default: "8000"
-  - name: MAX_IMAGE_SIZE
-    description: Maximum image size in bytes
-    default: "10485760"
-  - name: ALLOWED_DOMAINS
-    description: Comma-separated list of allowed domains for URL extraction
-    default: ""
-
 startCommand:
   type: stdio
   configSchema:
     type: object
+    required: []
     properties:
       port:
         type: number
@@ -109,16 +99,12 @@ startCommand:
         description: Comma-separated list of allowed domains for URL extraction
         default: ""
   commandFunction: |
-    function getCommand(config) {
-      const env = {
-        PORT: config.port.toString(),
-        MAX_IMAGE_SIZE: config.maxImageSize.toString(),
-        ALLOWED_DOMAINS: config.allowedDomains
-      };
-      
-      return {
-        command: "node",
-        args: ["dist/index.js"],
-        env: env
-      };
+    config => ({ 
+      command: 'node', 
+      args: ['dist/index.js'], 
+      env: {
+        PORT: config.port?.toString() || "8000",
+        MAX_IMAGE_SIZE: config.maxImageSize?.toString() || "10485760",
+        ALLOWED_DOMAINS: config.allowedDomains || ""
       }
+    })
