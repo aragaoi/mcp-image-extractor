@@ -16,8 +16,8 @@
     "lint": "eslint . --ext .ts",
     "test": "jest --no-cache --passWithNoTests",
     "test:ci": "jest --ci",
-    "prepare": "npm run build",
-    "smithery:deploy": "npx @smithery/cli install . --client claude"
+    "smithery:deploy": "SMITHERY_API_KEY=$SMITHERY_API_KEY npx @smithery/cli install . --client claude",
+    "deploy": "node scripts/deploy.js"
   },
   "keywords": [
     "mcp",
