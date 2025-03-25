@@ -3,9 +3,9 @@
 MCP server for extracting and converting images to base64 for LLM analysis.
 
 This MCP server provides tools for AI assistants to:
+- Extract images from local files
 - Extract images from URLs
 - Process base64-encoded images
-- Save screenshots to files
 
 ## Installation
 
@@ -187,6 +187,16 @@ When connecting via Smithery UI, you can configure:
 
 ## Available Tools
 
+### extract_image_from_file
+
+Extracts an image from a local file and converts it to base64.
+
+Parameters:
+- `file_path` (required): Path to the local image file
+- `resize` (optional, default: true): Whether to resize the image
+- `max_width` (optional, default: 800): Maximum width after resizing
+- `max_height` (optional, default: 800): Maximum height after resizing
+
 ### extract_image_from_url
 
 Extracts an image from a URL and converts it to base64.
@@ -208,52 +218,21 @@ Parameters:
 - `max_width` (optional, default: 800): Maximum width after resizing
 - `max_height` (optional, default: 800): Maximum height after resizing
 
-### save_screenshot
-
-Saves a screenshot or image as a file and returns its path.
-
-Parameters:
-- `base64` (required): Base64-encoded image data
-- `filename` (optional): Name to save the file as (without extension)
-- `format` (optional, default: "png"): Image format to save as (png, jpg, jpeg, webp)
-
 ## Example Usage
 
 Here's an example of how to use the tools from Claude:
+
+```
+Please extract the image from this local file: images/photo.jpg
+```
+
+Claude will automatically use the `extract_image_from_file` tool to load and analyze the image content.
 
 ```
 Please extract the image from this URL: https://example.com/image.jpg
 ```
 
 Claude will automatically use the `extract_image_from_url` tool to fetch and analyze the image content.
-
-## Development
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ifmelate/mcp-image-extractor.git
-   cd mcp-image-extractor
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Build the project:
-   ```bash
-   npm run build
-   ```
-
-4. Start the server locally:
-   ```bash
-   npm start
-   ```
-
-5. Test with MCP Inspector:
-   ```bash
-   npx @modelcontextprotocol/inspector dist/index.js
-   ```
 
 ## Docker
 

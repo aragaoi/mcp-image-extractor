@@ -25,3 +25,6 @@ screenshots/
 *.swo
 .DS_Store 
 .cursor/mcp.json
+
+# NPM configuration
+.npmrc
