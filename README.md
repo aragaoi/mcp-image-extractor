@@ -7,6 +7,9 @@ This MCP server provides tools for AI assistants to:
 - Extract images from URLs
 - Process base64-encoded images
 
+How it looks in Cursor:
+<img width="321" alt="image" src="https://github.com/user-attachments/assets/5b0f05f4-61a6-4d00-8a16-5d5faef27d16" />
+
 ## Installation
 
 ### Via Smithery (Recommended)
