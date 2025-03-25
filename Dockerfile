@@ -5,15 +5,22 @@ RUN apk add --no-cache python3 make g++ vips-dev
 
 WORKDIR /app
 
-# Copy package files and install dependencies (including dev dependencies for build)
+# Copy package.json and package-lock.json first for better caching
 COPY package*.json ./
-RUN npm ci
 
-# Copy source code and build
+# Install TypeScript globally
+RUN npm install -g typescript
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application
 COPY . .
+
+# Build the application
 RUN npm run build
 
-# Remove dev dependencies after build
+# Remove dev dependencies for smaller image
 RUN npm prune --production
 
 ENV PORT=8000
