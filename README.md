@@ -193,9 +193,8 @@ Extracts an image from a local file and converts it to base64.
 
 Parameters:
 - `file_path` (required): Path to the local image file
-- `resize` (optional, default: true): Whether to resize the image
-- `max_width` (optional, default: 800): Maximum width after resizing
-- `max_height` (optional, default: 800): Maximum height after resizing
+
+**Note:** All images are automatically resized to optimal dimensions (max 512x512) for LLM analysis to limit the size of the base64 output and optimize context window usage.
 
 ### extract_image_from_url
 
@@ -203,9 +202,8 @@ Extracts an image from a URL and converts it to base64.
 
 Parameters:
 - `url` (required): URL of the image to extract
-- `resize` (optional, default: true): Whether to resize the image
-- `max_width` (optional, default: 800): Maximum width after resizing
-- `max_height` (optional, default: 800): Maximum height after resizing
+
+**Note:** All images are automatically resized to optimal dimensions (max 512x512) for LLM analysis to limit the size of the base64 output and optimize context window usage.
 
 ### extract_image_from_base64
 
@@ -214,9 +212,8 @@ Processes a base64-encoded image for LLM analysis.
 Parameters:
 - `base64` (required): Base64-encoded image data
 - `mime_type` (optional, default: "image/png"): MIME type of the image
-- `resize` (optional, default: true): Whether to resize the image
-- `max_width` (optional, default: 800): Maximum width after resizing
-- `max_height` (optional, default: 800): Maximum height after resizing
+
+**Note:** All images are automatically resized to optimal dimensions (max 512x512) for LLM analysis to limit the size of the base64 output and optimize context window usage.
 
 ## Example Usage
 

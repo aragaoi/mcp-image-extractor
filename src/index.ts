@@ -23,9 +23,9 @@ server.tool(
   "extract_image_from_file",
   {
     file_path: z.string().describe("Path to the local image file"),
-    resize: z.boolean().default(true).describe("Whether to resize the image to optimize for LLM processing"),
-    max_width: z.number().default(800).describe("Maximum width of the resized image (if resize is true)"),
-    max_height: z.number().default(800).describe("Maximum height of the resized image (if resize is true)")
+    resize: z.boolean().default(true).describe("For backward compatibility only. Images are always automatically resized to optimal dimensions (max 512x512) for LLM analysis"),
+    max_width: z.number().default(512).describe("For backward compatibility only. Default maximum width is now 512px"),
+    max_height: z.number().default(512).describe("For backward compatibility only. Default maximum height is now 512px")
   },
   async (args, extra) => {
     const result = await extractImageFromFile(args);
@@ -38,9 +38,9 @@ server.tool(
   "extract_image_from_url",
   {
     url: z.string().describe("URL of the image to extract"),
-    resize: z.boolean().default(true).describe("Whether to resize the image to optimize for LLM processing"),
-    max_width: z.number().default(800).describe("Maximum width of the resized image (if resize is true)"),
-    max_height: z.number().default(800).describe("Maximum height of the resized image (if resize is true)")
+    resize: z.boolean().default(true).describe("For backward compatibility only. Images are always automatically resized to optimal dimensions (max 512x512) for LLM analysis"),
+    max_width: z.number().default(512).describe("For backward compatibility only. Default maximum width is now 512px"),
+    max_height: z.number().default(512).describe("For backward compatibility only. Default maximum height is now 512px")
   },
   async (args, extra) => {
     const result = await extractImageFromUrl(args);
@@ -54,9 +54,9 @@ server.tool(
   {
     base64: z.string().describe("Base64-encoded image data"),
     mime_type: z.string().default("image/png").describe("MIME type of the image"),
-    resize: z.boolean().default(true).describe("Whether to resize the image to optimize for LLM processing"),
-    max_width: z.number().default(800).describe("Maximum width of the resized image (if resize is true)"),
-    max_height: z.number().default(800).describe("Maximum height of the resized image (if resize is true)")
+    resize: z.boolean().default(true).describe("For backward compatibility only. Images are always automatically resized to optimal dimensions (max 512x512) for LLM analysis"),
+    max_width: z.number().default(512).describe("For backward compatibility only. Default maximum width is now 512px"),
+    max_height: z.number().default(512).describe("For backward compatibility only. Default maximum height is now 512px")
   },
   async (args, extra) => {
     const result = await extractImageFromBase64(args);

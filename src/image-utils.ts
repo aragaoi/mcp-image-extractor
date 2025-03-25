@@ -7,6 +7,10 @@ import * as path from 'path';
 const MAX_IMAGE_SIZE = parseInt(process.env.MAX_IMAGE_SIZE || '10485760', 10); // 10MB default
 const ALLOWED_DOMAINS = process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAINS.split(',') : [];
 
+// Default max dimensions for optimal LLM context usage
+const DEFAULT_MAX_WIDTH = 512;
+const DEFAULT_MAX_HEIGHT = 512;
+
 // Type definitions
 export type ExtractImageFromFileParams = {
   file_path: string;
@@ -83,13 +87,19 @@ export async function extractImageFromFile(params: ExtractImageFromFileParams): 
     // Process the image
     let metadata = await sharp(imageBuffer).metadata();
     
-    // Resize if needed
-    if (resize && metadata.width && metadata.height) {
-      if (metadata.width > max_width || metadata.height > max_height) {
+    // Always resize to ensure the base64 representation is reasonable
+    // This will help avoid consuming too much of the context window
+    if (metadata.width && metadata.height) {
+      // Use provided dimensions or fallback to defaults for optimal LLM context usage
+      const targetWidth = Math.min(metadata.width, DEFAULT_MAX_WIDTH);
+      const targetHeight = Math.min(metadata.height, DEFAULT_MAX_HEIGHT);
+      
+      // Only resize if needed
+      if (metadata.width > targetWidth || metadata.height > targetHeight) {
         imageBuffer = await sharp(imageBuffer)
           .resize({
-            width: Math.min(metadata.width, max_width),
-            height: Math.min(metadata.height, max_height),
+            width: targetWidth,
+            height: targetHeight,
             fit: 'inside',
             withoutEnlargement: true
           })
@@ -180,13 +190,19 @@ export async function extractImageFromUrl(params: ExtractImageFromUrlParams): Pr
     let imageBuffer = Buffer.from(response.data);
     let metadata = await sharp(imageBuffer).metadata();
     
-    // Resize if needed
-    if (resize && metadata.width && metadata.height) {
-      if (metadata.width > max_width || metadata.height > max_height) {
+    // Always resize to ensure the base64 representation is reasonable
+    // This will help avoid consuming too much of the context window
+    if (metadata.width && metadata.height) {
+      // Use provided dimensions or fallback to defaults for optimal LLM context usage
+      const targetWidth = Math.min(metadata.width, DEFAULT_MAX_WIDTH);
+      const targetHeight = Math.min(metadata.height, DEFAULT_MAX_HEIGHT);
+      
+      // Only resize if needed
+      if (metadata.width > targetWidth || metadata.height > targetHeight) {
         imageBuffer = await sharp(imageBuffer)
           .resize({
-            width: Math.min(metadata.width, max_width),
-            height: Math.min(metadata.height, max_height),
+            width: targetWidth,
+            height: targetHeight,
             fit: 'inside',
             withoutEnlargement: true
           })
@@ -269,13 +285,19 @@ export async function extractImageFromBase64(params: ExtractImageFromBase64Param
       };
     }
     
-    // Resize if needed
-    if (resize && metadata.width && metadata.height) {
-      if (metadata.width > max_width || metadata.height > max_height) {
+    // Always resize to ensure the base64 representation is reasonable
+    // This will help avoid consuming too much of the context window
+    if (metadata.width && metadata.height) {
+      // Use provided dimensions or fallback to defaults for optimal LLM context usage
+      const targetWidth = Math.min(metadata.width, DEFAULT_MAX_WIDTH);
+      const targetHeight = Math.min(metadata.height, DEFAULT_MAX_HEIGHT);
+      
+      // Only resize if needed
+      if (metadata.width > targetWidth || metadata.height > targetHeight) {
         imageBuffer = await sharp(imageBuffer)
           .resize({
-            width: Math.min(metadata.width, max_width),
-            height: Math.min(metadata.height, max_height),
+            width: targetWidth,
+            height: targetHeight,
             fit: 'inside',
             withoutEnlargement: true
           })
