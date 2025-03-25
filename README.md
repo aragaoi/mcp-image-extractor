@@ -11,6 +11,9 @@ How it looks in Cursor:
 
 <img width="687" alt="image" src="https://github.com/user-attachments/assets/8954dbbd-7e7a-4f27-82a7-b251bd3c5af2" />
 
+Suitable cases:
+- analyze playwright test results: screenshots
+
 ## Installation
 
 ### Via Smithery (Recommended)
