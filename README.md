@@ -1,4 +1,4 @@
-# MCP Image Extractor
+# [![smithery badge](https://smithery.ai/badge/@ifmelate/mcp-image-extractor)](https://smithery.ai/server/@ifmelate/mcp-image-extractor) MCP Image Extractor
 
 MCP server for extracting and converting images to base64 for LLM analysis.
 
@@ -6,6 +6,10 @@ This MCP server provides tools for AI assistants to:
 - Extract images from local files
 - Extract images from URLs
 - Process base64-encoded images
+
+How it looks in Cursor:
+
+<img width="687" alt="image" src="https://github.com/user-attachments/assets/8954dbbd-7e7a-4f27-82a7-b251bd3c5af2" />
 
 ## Installation
 
