@@ -11,32 +11,44 @@ This MCP server provides tools for AI assistants to:
 
 ### Via Smithery (Recommended)
 
-The easiest way to install and use this MCP server with Claude is via Smithery:
+The easiest way to install and use this MCP server is via Smithery.
 
+#### For Claude Desktop
+
+1. Open your terminal and run:
 ```bash
-npx -y @smithery/cli install mcp-image-extractor --client claude
+npx @smithery/cli install @ifmelate/mcp-image-extractor --client claude
 ```
+
+2. The server will be automatically configured and ready to use in Claude Desktop.
+
+#### For Cursor or Other Clients
+
+For Cursor or other MCP clients, you can install the server from Smithery directly:
+
+1. Visit [Smithery](https://smithery.ai) and go to the [Image Extractor page](https://smithery.ai/server/@ifmelate/mcp-image-extractor)
+2. Click on the "Connect" button and follow the instructions to install
 
 ### Manual Installation
 
 You can also install the package globally:
 
 ```bash
-npm install -g mcp-image-extractor
+npm install -g @ifmelate/mcp-image-extractor
 ```
 
 ## Configuration
 
 ### For Claude Desktop
 
-Add the following configuration to your Claude Desktop settings:
+After installing via Smithery, the server should be automatically configured. If you need to manually configure it, add the following to your Claude Desktop settings:
 
 ```json
 {
   "mcpServers": {
     "image-extractor": {
       "command": "npx",
-      "args": ["-y", "mcp-image-extractor"]
+      "args": ["-y", "@ifmelate/mcp-image-extractor"]
     }
   }
 }
@@ -55,7 +67,7 @@ Add this configuration to the Cline MCP settings:
   "mcpServers": {
     "image-extractor": {
       "command": "npx",
-      "args": ["-y", "mcp-image-extractor"]
+      "args": ["-y", "@ifmelate/mcp-image-extractor"]
     }
   }
 }
@@ -64,6 +76,29 @@ Add this configuration to the Cline MCP settings:
 Settings file location:
 - macOS: `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
 - Windows: `%APPDATA%\Code\User\globalStorage\saoudrizwan.claude-dev\settings\cline_mcp_settings.json`
+
+### For Cursor
+
+Add this configuration to your Cursor settings:
+
+```json
+{
+  "mcpServers": {
+    "image-extractor": {
+      "command": "npx",
+      "args": ["-y", "@ifmelate/mcp-image-extractor"]
+    }
+  }
+}
+```
+
+## Configuration Options
+
+When connecting via Smithery UI, you can configure:
+
+- **port**: The port number for the server (default: 8000)
+- **maxImageSize**: Maximum image size in bytes (default: 10485760)
+- **allowedDomains**: Comma-separated list of allowed domains for URL extraction (default: all domains allowed)
 
 ## Available Tools
 
@@ -97,6 +132,16 @@ Parameters:
 - `filename` (optional): Name to save the file as (without extension)
 - `format` (optional, default: "png"): Image format to save as (png, jpg, jpeg, webp)
 
+## Example Usage
+
+Here's an example of how to use the tools from Claude:
+
+```
+Please extract the image from this URL: https://example.com/image.jpg
+```
+
+Claude will automatically use the `extract_image_from_url` tool to fetch and analyze the image content.
+
 ## Development
 
 1. Clone the repository:
@@ -123,20 +168,6 @@ Parameters:
 5. Test with MCP Inspector:
    ```bash
    npx @modelcontextprotocol/inspector dist/index.js
-   ```
-
-## Publishing
-
-To publish your own version:
-
-1. Log in to npm:
-   ```bash
-   npm login
-   ```
-
-2. Publish the package:
-   ```bash
-   npm publish
    ```
 
 ## Docker
