@@ -34,8 +34,15 @@ For Cursor or other MCP clients, you can install the server from Smithery direct
 Since this package is only available in the Smithery registry and not in npm, you need to install it directly from GitHub:
 
 ```bash
-npm install -g github:ifmelate/mcp-image-extractor
+# Clone and install 
+git clone https://github.com/ifmelate/mcp-image-extractor.git
+cd mcp-image-extractor
+npm install
+npm run build
+npm link
 ```
+
+This will make the `mcp-image-extractor` command available globally.
 
 ## Configuration
 
@@ -97,7 +104,11 @@ Add this configuration to your Cursor settings:
 > 
 > Option 1: Use direct GitHub installation
 > ```bash
-> npm install -g github:ifmelate/mcp-image-extractor
+> git clone https://github.com/ifmelate/mcp-image-extractor.git
+> cd mcp-image-extractor
+> npm install
+> npm run build
+> npm link
 > ```
 > 
 > Then configure:
@@ -222,4 +233,4 @@ docker run -p 8000:8000 mcp-image-extractor
 
 ## License
 
-MIT 
+MIT
