@@ -31,10 +31,10 @@ For Cursor or other MCP clients, you can install the server from Smithery direct
 
 ### Manual Installation
 
-You can also install the package globally:
+Since this package is only available in the Smithery registry and not in npm, you need to install it directly from GitHub:
 
 ```bash
-npm install -g @ifmelate/mcp-image-extractor
+npm install -g github:ifmelate/mcp-image-extractor
 ```
 
 ## Configuration
@@ -48,7 +48,7 @@ After installing via Smithery, the server should be automatically configured. If
   "mcpServers": {
     "image-extractor": {
       "command": "npx",
-      "args": ["-y", "@ifmelate/mcp-image-extractor"]
+      "args": ["--yes", "@smithery/mcp-image-extractor"]
     }
   }
 }
@@ -67,7 +67,7 @@ Add this configuration to the Cline MCP settings:
   "mcpServers": {
     "image-extractor": {
       "command": "npx",
-      "args": ["-y", "@ifmelate/mcp-image-extractor"]
+      "args": ["--yes", "@smithery/mcp-image-extractor"]
     }
   }
 }
@@ -86,7 +86,7 @@ Add this configuration to your Cursor settings:
   "mcpServers": {
     "image-extractor": {
       "command": "npx",
-      "args": ["--yes", "@ifmelate/mcp-image-extractor"],
+      "args": ["--yes", "@smithery/mcp-image-extractor"],
       "disabled": false
     }
   }
@@ -95,22 +95,9 @@ Add this configuration to your Cursor settings:
 
 > **Important Note for Cursor Users**: If you see "Failed to create client" error, try these alternatives:
 > 
-> Option 1: Use full path to npx
-> ```json
-> {
->   "mcpServers": {
->     "image-extractor": {
->       "command": "/usr/local/bin/npx",
->       "args": ["--yes", "@ifmelate/mcp-image-extractor"],
->       "disabled": false
->     }
->   }
-> }
-> ```
-> 
-> Option 2: Install globally and use direct path
+> Option 1: Use direct GitHub installation
 > ```bash
-> npm install -g @ifmelate/mcp-image-extractor
+> npm install -g github:ifmelate/mcp-image-extractor
 > ```
 > 
 > Then configure:
@@ -119,6 +106,27 @@ Add this configuration to your Cursor settings:
 >   "mcpServers": {
 >     "image-extractor": {
 >       "command": "mcp-image-extractor",
+>       "disabled": false
+>     }
+>   }
+> }
+> ```
+> 
+> Option 2: Clone and run locally
+> ```bash
+> git clone https://github.com/ifmelate/mcp-image-extractor.git
+> cd mcp-image-extractor
+> npm install
+> npm run build
+> ```
+> 
+> Then configure:
+> ```json
+> {
+>   "mcpServers": {
+>     "image-extractor": {
+>       "command": "node",
+>       "args": ["/full/path/to/mcp-image-extractor/dist/index.js"],
 >       "disabled": false
 >     }
 >   }
