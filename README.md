@@ -14,31 +14,11 @@ How it looks in Cursor:
 Suitable cases:
 - analyze playwright test results: screenshots
 
-## Installation
-
-### Via Smithery (Recommended)
-
-The easiest way to install and use this MCP server is via Smithery.
-
-#### For Claude Desktop
-
-1. Open your terminal and run:
-```bash
-npx @smithery/cli install @ifmelate/mcp-image-extractor --client claude
-```
-
-2. The server will be automatically configured and ready to use in Claude Desktop.
 
 #### For Cursor or Other Clients
 
-For Cursor or other MCP clients, you can install the server from Smithery directly:
-
-1. Visit [Smithery](https://smithery.ai) and go to the [Image Extractor page](https://smithery.ai/server/@ifmelate/mcp-image-extractor)
-2. Click on the "Connect" button and follow the instructions to install
 
 ### Manual Installation
-
-Since this package is only available in the Smithery registry and not in npm, you need to install it directly from GitHub:
 
 ```bash
 # Clone and install 
@@ -51,67 +31,8 @@ npm link
 
 This will make the `mcp-image-extractor` command available globally.
 
-## Configuration
 
-### For Claude Desktop
-
-After installing via Smithery, the server should be automatically configured. If you need to manually configure it, add the following to your Claude Desktop settings:
-
-```json
-{
-  "mcpServers": {
-    "image-extractor": {
-      "command": "npx",
-      "args": ["--yes", "@smithery/mcp-image-extractor"]
-    }
-  }
-}
-```
-
-Settings file location:
-- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
-
-### For VSCode with Cline Extension
-
-Add this configuration to the Cline MCP settings:
-
-```json
-{
-  "mcpServers": {
-    "image-extractor": {
-      "command": "npx",
-      "args": ["--yes", "@smithery/mcp-image-extractor"]
-    }
-  }
-}
-```
-
-Settings file location:
-- macOS: `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
-- Windows: `%APPDATA%\Code\User\globalStorage\saoudrizwan.claude-dev\settings\cline_mcp_settings.json`
-
-### For Cursor
-
-You can configure Cursor to use this MCP server in one of the following ways:
-
-#### Option 1: Using Cursor MCP Settings UI
-
-Add this configuration through Cursor's MCP Settings UI:
-
-```json
-{
-  "mcpServers": {
-    "image-extractor": {
-      "command": "npx",
-      "args": ["--yes", "@smithery/mcp-image-extractor"],
-      "disabled": false
-    }
-  }
-}
-```
-
-#### Option 2: Using .cursor/mcp.json file
+#### Using .cursor/mcp.json file
 
 For local development or when working in a specific project, you can add a `.cursor/mcp.json` file in your project root:
 
@@ -183,14 +104,6 @@ Or, if you've installed via npm link:
 >   }
 > }
 > ```
-
-## Configuration Options
-
-When connecting via Smithery UI, you can configure:
-
-- **port**: The port number for the server (default: 8000)
-- **maxImageSize**: Maximum image size in bytes (default: 10485760)
-- **allowedDomains**: Comma-separated list of allowed domains for URL extraction (default: all domains allowed)
 
 ## Available Tools
 
