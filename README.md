@@ -86,7 +86,11 @@ Settings file location:
 
 ### For Cursor
 
-Add this configuration to your Cursor settings:
+You can configure Cursor to use this MCP server in one of the following ways:
+
+#### Option 1: Using Cursor MCP Settings UI
+
+Add this configuration through Cursor's MCP Settings UI:
 
 ```json
 {
@@ -94,6 +98,35 @@ Add this configuration to your Cursor settings:
     "image-extractor": {
       "command": "npx",
       "args": ["--yes", "@smithery/mcp-image-extractor"],
+      "disabled": false
+    }
+  }
+}
+```
+
+#### Option 2: Using .cursor/mcp.json file
+
+For local development or when working in a specific project, you can add a `.cursor/mcp.json` file in your project root:
+
+```json
+{
+  "mcpServers": {
+    "image-extractor": {
+      "command": "node",
+      "args": ["/full/path/to/mcp-image-extractor/dist/index.js"],
+      "disabled": false
+    }
+  }
+}
+```
+
+Or, if you've installed via npm link:
+
+```json
+{
+  "mcpServers": {
+    "image-extractor": {
+      "command": "mcp-image-extractor",
       "disabled": false
     }
   }
@@ -111,7 +144,7 @@ Add this configuration to your Cursor settings:
 > npm link
 > ```
 > 
-> Then configure:
+> Then configure in `.cursor/mcp.json`:
 > ```json
 > {
 >   "mcpServers": {
@@ -131,7 +164,7 @@ Add this configuration to your Cursor settings:
 > npm run build
 > ```
 > 
-> Then configure:
+> Then configure in `.cursor/mcp.json`:
 > ```json
 > {
 >   "mcpServers": {
