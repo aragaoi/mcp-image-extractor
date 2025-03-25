@@ -86,11 +86,44 @@ Add this configuration to your Cursor settings:
   "mcpServers": {
     "image-extractor": {
       "command": "npx",
-      "args": ["-y", "@ifmelate/mcp-image-extractor"]
+      "args": ["--yes", "@ifmelate/mcp-image-extractor"],
+      "disabled": false
     }
   }
 }
 ```
+
+> **Important Note for Cursor Users**: If you see "Failed to create client" error, try these alternatives:
+> 
+> Option 1: Use full path to npx
+> ```json
+> {
+>   "mcpServers": {
+>     "image-extractor": {
+>       "command": "/usr/local/bin/npx",
+>       "args": ["--yes", "@ifmelate/mcp-image-extractor"],
+>       "disabled": false
+>     }
+>   }
+> }
+> ```
+> 
+> Option 2: Install globally and use direct path
+> ```bash
+> npm install -g @ifmelate/mcp-image-extractor
+> ```
+> 
+> Then configure:
+> ```json
+> {
+>   "mcpServers": {
+>     "image-extractor": {
+>       "command": "mcp-image-extractor",
+>       "disabled": false
+>     }
+>   }
+> }
+> ```
 
 ## Configuration Options
 
