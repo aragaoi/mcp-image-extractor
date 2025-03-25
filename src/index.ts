@@ -14,7 +14,7 @@ dotenv.config();
 // Create an MCP server
 const server = new McpServer({
   name: "mcp-image-extractor",
-  description: "MCP server for extracting and converting images to base64 for LLM analysis",
+  description: "MCP server for analyzing of images from files, URLs, and base64 data for visual content understanding, text extraction (OCR), and object recognition in screenshots and photos",
   version: "1.0.0"
 });
 
@@ -22,7 +22,7 @@ const server = new McpServer({
 server.tool(
   "extract_image_from_file",
   {
-    file_path: z.string().describe("Path to the local image file"),
+    file_path: z.string().describe("Path to the image file to analyze (supports screenshots, photos, diagrams, and documents in PNG, JPG, GIF, WebP formats)"),
     resize: z.boolean().default(true).describe("For backward compatibility only. Images are always automatically resized to optimal dimensions (max 512x512) for LLM analysis"),
     max_width: z.number().default(512).describe("For backward compatibility only. Default maximum width is now 512px"),
     max_height: z.number().default(512).describe("For backward compatibility only. Default maximum height is now 512px")
@@ -37,7 +37,7 @@ server.tool(
 server.tool(
   "extract_image_from_url",
   {
-    url: z.string().describe("URL of the image to extract"),
+    url: z.string().describe("URL of the image to analyze for visual content, text extraction, or object recognition (supports web screenshots, photos, diagrams)"),
     resize: z.boolean().default(true).describe("For backward compatibility only. Images are always automatically resized to optimal dimensions (max 512x512) for LLM analysis"),
     max_width: z.number().default(512).describe("For backward compatibility only. Default maximum width is now 512px"),
     max_height: z.number().default(512).describe("For backward compatibility only. Default maximum height is now 512px")
@@ -52,8 +52,8 @@ server.tool(
 server.tool(
   "extract_image_from_base64",
   {
-    base64: z.string().describe("Base64-encoded image data"),
-    mime_type: z.string().default("image/png").describe("MIME type of the image"),
+    base64: z.string().describe("Base64-encoded image data to analyze (useful for screenshots, images from clipboard, or dynamically generated visuals)"),
+    mime_type: z.string().default("image/png").describe("MIME type of the image (e.g., image/png, image/jpeg)"),
     resize: z.boolean().default(true).describe("For backward compatibility only. Images are always automatically resized to optimal dimensions (max 512x512) for LLM analysis"),
     max_width: z.number().default(512).describe("For backward compatibility only. Default maximum width is now 512px"),
     max_height: z.number().default(512).describe("For backward compatibility only. Default maximum height is now 512px")
