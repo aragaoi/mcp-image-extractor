@@ -1,4 +1,4 @@
-# [![smithery badge](https://smithery.ai/badge/@ifmelate/mcp-image-extractor)](https://smithery.ai/server/@ifmelate/mcp-image-extractor) MCP Image Extractor
+# MCP Image Extractor
 
 MCP server for extracting and converting images to base64 for LLM analysis.
 
