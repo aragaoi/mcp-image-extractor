@@ -8,7 +8,8 @@ This MCP server provides tools for AI assistants to:
 - Process base64-encoded images
 
 How it looks in Cursor:
-<img width="321" alt="image" src="https://github.com/user-attachments/assets/5b0f05f4-61a6-4d00-8a16-5d5faef27d16" />
+
+<img width="687" alt="image" src="https://github.com/user-attachments/assets/8954dbbd-7e7a-4f27-82a7-b251bd3c5af2" />
 
 ## Installation
 
