@@ -7,6 +7,10 @@ This MCP server provides tools for AI assistants to:
 - Extract images from URLs
 - Process base64-encoded images
 
+<a href="https://glama.ai/mcp/servers/@ifmelate/mcp-image-extractor">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@ifmelate/mcp-image-extractor/badge" alt="Image Extractor MCP server" />
+</a>
+
 How it looks in Cursor:
 
 <img width="687" alt="image" src="https://github.com/user-attachments/assets/8954dbbd-7e7a-4f27-82a7-b251bd3c5af2" />
