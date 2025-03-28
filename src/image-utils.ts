@@ -11,6 +11,20 @@ const ALLOWED_DOMAINS = process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAIN
 const DEFAULT_MAX_WIDTH = 512;
 const DEFAULT_MAX_HEIGHT = 512;
 
+// Compression configuration based on format - new addition
+type SupportedFormat = 'jpeg' | 'jpg' | 'png' | 'webp' | 'gif' | 'svg' | 'avif' | 'tiff';
+
+const COMPRESSION_OPTIONS: Record<SupportedFormat, object> = {
+  jpeg: { quality: 80 },
+  jpg: { quality: 80 },
+  png: { quality: 80, compressionLevel: 9 },
+  webp: { quality: 80 },
+  gif: { },
+  svg: { },
+  avif: { quality: 80 },
+  tiff: { quality: 80 }
+};
+
 // Type definitions
 export type ExtractImageFromFileParams = {
   file_path: string;
@@ -59,6 +73,39 @@ export type McpToolResponse = {
   _meta?: Record<string, unknown>;
   isError?: boolean;
 };
+
+// Helper function to compress image based on format
+async function compressImage(imageBuffer: Buffer, formatStr: string): Promise<Buffer> {
+  const sharpInstance = sharp(imageBuffer);
+  const format = formatStr.toLowerCase() as SupportedFormat;
+  
+  // Check if format is supported
+  if (format in COMPRESSION_OPTIONS) {
+    const options = COMPRESSION_OPTIONS[format];
+    
+    // Use specific methods based on format
+    switch (format) {
+      case 'jpeg':
+      case 'jpg':
+        return await sharpInstance.jpeg(options as any).toBuffer();
+      case 'png':
+        return await sharpInstance.png(options as any).toBuffer();
+      case 'webp':
+        return await sharpInstance.webp(options as any).toBuffer();
+      case 'avif':
+        return await sharpInstance.avif(options as any).toBuffer();
+      case 'tiff':
+        return await sharpInstance.tiff(options as any).toBuffer();
+      // For formats without specific compression options
+      case 'gif':
+      case 'svg':
+        return await sharpInstance.toBuffer();
+    }
+  }
+  
+  // Default to jpeg if format not supported
+  return await sharpInstance.jpeg(COMPRESSION_OPTIONS.jpeg as any).toBuffer();
+}
 
 // Extract image from file
 export async function extractImageFromFile(params: ExtractImageFromFileParams): Promise<McpToolResponse> {
@@ -112,13 +159,41 @@ export async function extractImageFromFile(params: ExtractImageFromFileParams): 
 
     // Determine mime type based on file extension
     const fileExt = path.extname(file_path).toLowerCase();
-    let mimeType = 'image/jpeg'; // Default
+    let mimeType = 'image/jpeg';
+    let format = 'jpeg';
     
-    if (fileExt === '.png') mimeType = 'image/png';
-    else if (fileExt === '.jpg' || fileExt === '.jpeg') mimeType = 'image/jpeg';
-    else if (fileExt === '.gif') mimeType = 'image/gif';
-    else if (fileExt === '.webp') mimeType = 'image/webp';
-    else if (fileExt === '.svg') mimeType = 'image/svg+xml';
+    if (fileExt === '.png') {
+      mimeType = 'image/png';
+      format = 'png';
+    }
+    else if (fileExt === '.jpg' || fileExt === '.jpeg') {
+      mimeType = 'image/jpeg';
+      format = 'jpeg';
+    }
+    else if (fileExt === '.gif') {
+      mimeType = 'image/gif';
+      format = 'gif';
+    }
+    else if (fileExt === '.webp') {
+      mimeType = 'image/webp';
+      format = 'webp';
+    }
+    else if (fileExt === '.svg') {
+      mimeType = 'image/svg+xml';
+      format = 'svg';
+    }
+    else if (fileExt === '.avif') {
+      mimeType = 'image/avif';
+      format = 'avif';
+    }
+    
+    // Compress the image based on its format
+    try {
+      imageBuffer = await compressImage(imageBuffer, format);
+    } catch (compressionError) {
+      console.warn('Compression warning, using original image:', compressionError);
+      // Continue with the original image if compression fails
+    }
     
     // Convert to base64
     const base64 = imageBuffer.toString('base64');
@@ -211,6 +286,15 @@ export async function extractImageFromUrl(params: ExtractImageFromUrlParams): Pr
         // Update metadata after resize
         metadata = await sharp(imageBuffer).metadata();
       }
+    }
+
+    // Compress the image based on its format
+    try {
+      const format = metadata.format || 'jpeg';
+      imageBuffer = await compressImage(imageBuffer, format);
+    } catch (compressionError) {
+      console.warn('Compression warning, using original image:', compressionError);
+      // Continue with the original image if compression fails
     }
 
     // Convert to base64
@@ -306,6 +390,15 @@ export async function extractImageFromBase64(params: ExtractImageFromBase64Param
         // Update metadata after resize
         metadata = await sharp(imageBuffer).metadata();
       }
+    }
+
+    // Compress the image based on its format
+    try {
+      const format = metadata.format || mime_type.split('/')[1] || 'jpeg';
+      imageBuffer = await compressImage(imageBuffer, format);
+    } catch (compressionError) {
+      console.warn('Compression warning, using original image:', compressionError);
+      // Continue with the original image if compression fails
     }
 
     // Convert back to base64

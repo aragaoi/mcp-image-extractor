@@ -22,8 +22,7 @@ type MockedSharp = {
 // Import the functions to test
 import { 
   extractImageFromUrl, 
-  extractImageFromBase64, 
-  saveScreenshot
+  extractImageFromBase64
 } from '../src/image-utils';
 
 describe('Image Processing Functions', () => {
@@ -96,19 +95,19 @@ describe('Image Processing Functions', () => {
       expect(result.content[0].text).toContain('width');
       expect(result.content[0].text).toContain('height');
     });
-  });
 
-  describe('saveScreenshot', () => {
-    it('should handle empty base64 data', async () => {
+    it('should handle invalid base64 data', async () => {
       // Mock Buffer.from to throw an error for empty base64
       jest.spyOn(Buffer, 'from').mockImplementation(() => {
         throw new Error('Invalid base64 string');
       });
       
-      const result = await saveScreenshot({
+      const result = await extractImageFromBase64({
         base64: '',
-        filename: 'test-screenshot',
-        format: 'png'
+        mime_type: 'image/png',
+        resize: true,
+        max_width: 800,
+        max_height: 800
       });
 
       expect(result.isError).toBe(true);
