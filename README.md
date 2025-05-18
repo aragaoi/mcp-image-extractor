@@ -18,9 +18,46 @@ How it looks in Cursor:
 Suitable cases:
 - analyze playwright test results: screenshots
 
+## Installation
 
-#### For Cursor or Other Clients
+### Recommended: Using npx in mcp.json (Easiest)
 
+The recommended way to install this MCP server is using npx directly in your `.cursor/mcp.json` file:
+
+```json
+{
+  "mcpServers": {
+    "image-extractor": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-image-extractor"
+      ]
+    }
+  }
+}
+```
+
+This approach:
+- Automatically installs the latest version
+- Does not require global installation
+- Works reliably across different environments
+
+### Alternative: Local Path Installation
+
+If you prefer to use a local installation of the package, you can clone the repository and point to the built files:
+
+```json
+{
+  "mcpServers": {
+    "image-extractor": {
+      "command": "node",
+      "args": ["/full/path/to/mcp-image-extractor/dist/index.js"],
+      "disabled": false
+    }
+  }
+}
+```
 
 ### Manual Installation
 
@@ -35,24 +72,7 @@ npm link
 
 This will make the `mcp-image-extractor` command available globally.
 
-
-#### Using .cursor/mcp.json file
-
-For local development or when working in a specific project, you can add a `.cursor/mcp.json` file in your project root:
-
-```json
-{
-  "mcpServers": {
-    "image-extractor": {
-      "command": "node",
-      "args": ["/full/path/to/mcp-image-extractor/dist/index.js"],
-      "disabled": false
-    }
-  }
-}
-```
-
-Or, if you've installed via npm link:
+Then configure in `.cursor/mcp.json`:
 
 ```json
 {
@@ -65,49 +85,7 @@ Or, if you've installed via npm link:
 }
 ```
 
-> **Important Note for Cursor Users**: If you see "Failed to create client" error, try these alternatives:
-> 
-> Option 1: Use direct GitHub installation
-> ```bash
-> git clone https://github.com/ifmelate/mcp-image-extractor.git
-> cd mcp-image-extractor
-> npm install
-> npm run build
-> npm link
-> ```
-> 
-> Then configure in `.cursor/mcp.json`:
-> ```json
-> {
->   "mcpServers": {
->     "image-extractor": {
->       "command": "mcp-image-extractor",
->       "disabled": false
->     }
->   }
-> }
-> ```
-> 
-> Option 2: Clone and run locally
-> ```bash
-> git clone https://github.com/ifmelate/mcp-image-extractor.git
-> cd mcp-image-extractor
-> npm install
-> npm run build
-> ```
-> 
-> Then configure in `.cursor/mcp.json`:
-> ```json
-> {
->   "mcpServers": {
->     "image-extractor": {
->       "command": "node",
->       "args": ["/full/path/to/mcp-image-extractor/dist/index.js"],
->       "disabled": false
->     }
->   }
-> }
-> ```
+> **Troubleshooting for Cursor Users**: If you see "Failed to create client" error, try the local path installation method above or ensure you're using the correct path to the executable.
 
 ## Available Tools
 
