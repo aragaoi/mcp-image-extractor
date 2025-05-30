@@ -1,6 +1,6 @@
 {
   "name": "mcp-image-extractor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "MCP server for extracting and converting images to base64 for LLM analysis",
   "main": "dist/index.js",
   "bin": {
@@ -54,7 +54,7 @@
   "smithery": {
     "name": "mcp-image-extractor",
     "description": "MCP server for extracting and converting images to base64 for LLM analysis",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "author": "",
     "license": "MIT"
   },
