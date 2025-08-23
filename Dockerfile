@@ -28,4 +28,7 @@ ENV MAX_IMAGE_SIZE=10485760
 ENV ALLOWED_DOMAINS=""
 
 # Start the server using stdio
-CMD ["node", "dist/index.js"] 
+RUN chown -R node:node /app
+USER node
+EXPOSE 8000
+CMD ["node", "dist/index.js"]
