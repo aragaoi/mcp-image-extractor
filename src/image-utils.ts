@@ -514,7 +514,7 @@ export async function extractScreenshotFromUrl(
         content: [
           {
             type: "text",
-            text: "Error: URL must start with http:// or https://",
+            text: "Error: URL must start with http:// or https://. For localhost, use http://localhost:port or http://127.0.0.1:port",
           },
         ],
         isError: true,
@@ -547,7 +547,15 @@ export async function extractScreenshotFromUrl(
     const puppeteer = await import("puppeteer");
     browser = await puppeteer.default.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: [
+        "--no-sandbox", 
+        "--disable-setuid-sandbox",
+        "--disable-web-security",
+        "--disable-features=VizDisplayCompositor",
+        "--ignore-certificate-errors",
+        "--ignore-ssl-errors",
+        "--ignore-certificate-errors-spki-list"
+      ],
     });
 
     const page = await browser.newPage();
@@ -559,7 +567,23 @@ export async function extractScreenshotFromUrl(
     });
 
     // Navigate to the page
-    await page.goto(url, { waitUntil: "networkidle0" });
+    try {
+      await page.goto(url, { 
+        waitUntil: "networkidle0",
+        timeout: 30000 // 30 second timeout
+      });
+    } catch (navigationError) {
+      // If networkidle0 fails, try with domcontentloaded
+      try {
+        await page.goto(url, { 
+          waitUntil: "domcontentloaded",
+          timeout: 30000
+        });
+      } catch (fallbackError) {
+        const errorMessage = navigationError instanceof Error ? navigationError.message : String(navigationError);
+        throw new Error(`Failed to navigate to ${url}. Make sure the server is running. Original error: ${errorMessage}`);
+      }
+    }
 
     // Wait for additional load time if specified
     if (wait_for_load > 0) {
