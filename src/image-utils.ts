@@ -2,7 +2,7 @@ import axios from 'axios';
 import sharp from 'sharp';
 import * as fs from 'fs';
 import * as path from 'path';
-import puppeteer from "puppeteer";
+// Dynamic import for puppeteer to avoid issues in test environment
 
 // Configuration
 const MAX_IMAGE_SIZE = parseInt(process.env.MAX_IMAGE_SIZE || "10485760", 10); // 10MB default
@@ -544,7 +544,8 @@ export async function extractScreenshotFromUrl(
     }
 
     // Launch browser
-    browser = await puppeteer.launch({
+    const puppeteer = await import("puppeteer");
+    browser = await puppeteer.default.launch({
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
@@ -603,24 +604,8 @@ export async function extractScreenshotFromUrl(
     let imageBuffer = screenshotBuffer;
     let metadata = await sharp(imageBuffer).metadata();
 
-    // Always resize to ensure the base64 representation is reasonable
-    if (metadata.width && metadata.height) {
-      const targetWidth = Math.min(metadata.width, DEFAULT_MAX_WIDTH);
-      const targetHeight = Math.min(metadata.height, DEFAULT_MAX_HEIGHT);
-
-      if (metadata.width > targetWidth || metadata.height > targetHeight) {
-        imageBuffer = await sharp(imageBuffer)
-          .resize({
-            width: targetWidth,
-            height: targetHeight,
-            fit: "inside",
-            withoutEnlargement: true,
-          })
-          .toBuffer();
-
-        metadata = await sharp(imageBuffer).metadata();
-      }
-    }
+    // Screenshots should maintain their original dimensions based on viewport
+    // No resizing needed as the dimensions are controlled by the viewport settings
 
     // Compress the image
     try {

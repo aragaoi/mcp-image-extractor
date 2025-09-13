@@ -9,6 +9,7 @@ jest.mock('axios');
 jest.mock('sharp');
 jest.mock('fs');
 jest.mock('path');
+jest.mock('puppeteer');
 
 // Define mock types
 type MockedSharp = {
@@ -22,7 +23,8 @@ type MockedSharp = {
 // Import the functions to test
 import { 
   extractImageFromUrl, 
-  extractImageFromBase64
+  extractImageFromBase64,
+  extractScreenshotFromUrl
 } from '../src/image-utils';
 
 describe('Image Processing Functions', () => {
